@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
@@ -18,9 +20,11 @@ import fr.free.francois.olivier.magicmanagerws.model.Edition;
 @Repository
 public class EditionServiceImpl implements EditionService {
 
+	private static Logger logger  = LogManager.getLogger(EditionServiceImpl.class);
+	
 	@Override
 	public Set<Edition> findAll() {
-		Set<Edition> editions = new HashSet<Edition>();
+		Set<Edition> editions = new HashSet<>();
 		try ( Session session = HibernateUtil.getSession() ) {
 			
 			Query<Edition> queryEdition = session.createNamedQuery("loadEditions", Edition.class);
@@ -45,6 +49,7 @@ public class EditionServiceImpl implements EditionService {
 			queryType.setParameter("idEdition", id);
 			edition = queryType.getSingleResult();
 		} catch (Exception e) {
+			logger.warn(e);
 			edition = null;
 		}
 		return edition;
@@ -52,9 +57,8 @@ public class EditionServiceImpl implements EditionService {
 
 	@Override
 	public List<Edition> findByName(String name) {
-		List<Edition> editions = new ArrayList<Edition>();
+		List<Edition> editions = new ArrayList<>();
 		try ( Session session = HibernateUtil.getSession() ) {
-		
 			Query<Edition> queryEdition = session.createNamedQuery("loadEditionsByName", Edition.class);
 			queryEdition.setParameter("name", name);
 			editions = queryEdition.getResultList();
@@ -92,13 +96,15 @@ public class EditionServiceImpl implements EditionService {
 	@Override
 	public boolean isEditionExist(Edition edition) {
 		boolean isExist = true;
+		Edition ed = null;
 		try ( Session session = HibernateUtil.getSession() ) {
-		
 			Query<Edition> queryEdition = session.createNamedQuery("loadEditionByNameFrAndEn", Edition.class);
 			queryEdition.setParameter("nameFr", edition.getNameFr());
 			queryEdition.setParameter("nameEn", edition.getNameEn());
-			edition = queryEdition.getSingleResult();
+			ed = queryEdition.getSingleResult();
+			logger.warn(ed);
 		} catch ( Exception e ) {
+			logger.warn(e);
 			isExist = false;
 		}
 		return isExist;

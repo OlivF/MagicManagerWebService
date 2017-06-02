@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
@@ -18,9 +20,11 @@ import fr.free.francois.olivier.magicmanagerws.model.Type;
 @Repository
 public class TypeServiceImpl implements TypeService {
 
+	private static Logger logger  = LogManager.getLogger(TypeServiceImpl.class);
+	
 	@Override
 	public Set<Type> findAll() {
-		Set<Type> types = new HashSet<Type>();
+		Set<Type> types = new HashSet<>();
 		try ( Session session = HibernateUtil.getSession() ) {
 			session.clear();
 			Query<Type> queryType = session.createNamedQuery("loadTypes", Type.class);
@@ -40,21 +44,20 @@ public class TypeServiceImpl implements TypeService {
 	public Type findById(int id) {
 		Type type = null;
 		try ( Session session = HibernateUtil.getSession() ) {
-		
 			Query<Type> queryType = session.createNamedQuery("loadTypeById", Type.class);
 			queryType.setParameter("idType", id);
 			type = queryType.getSingleResult();
-		} catch (Exception e){
+		} catch (Exception e) {
 			type = null;
+			logger.warn(e);
 		}
 		return type;
 	}
 
 	@Override
 	public List<Type> findByName(String name) {
-		List<Type> types = new ArrayList<Type>();
+		List<Type> types = new ArrayList<>();
 		try ( Session session = HibernateUtil.getSession() ) {
-		
 			Query<Type> queryType = session.createNamedQuery("loadTypesByName", Type.class);
 			queryType.setParameter("name", "%" + name + "%");
 			types = queryType.getResultList();
@@ -93,14 +96,16 @@ public class TypeServiceImpl implements TypeService {
 	@Override
 	public boolean isTypeExist(Type type) {
 		boolean isExist = true;
+		Type t = null;
 		try ( Session session = HibernateUtil.getSession() ) {
-		
 			Query<Type> queryType = session.createNamedQuery("loadTypeByNameFrAndEn", Type.class);
 			queryType.setParameter("nameFr", type.getNameFr());
 			queryType.setParameter("nameEn", type.getNameEn());
-			type = queryType.getSingleResult();
+			t = queryType.getSingleResult();
+			logger.warn(t);
 		} catch ( Exception e ) {
 			isExist = false;
+			logger.warn(e);
 		}
 		return isExist;
 	}

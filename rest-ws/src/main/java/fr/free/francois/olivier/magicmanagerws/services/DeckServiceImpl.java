@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
@@ -18,9 +20,11 @@ import fr.free.francois.olivier.magicmanagerws.model.Deck;
 @Repository
 public class DeckServiceImpl implements DeckService {
 
+	private static Logger logger  = LogManager.getLogger(DeckServiceImpl.class);
+	
 	@Override
 	public Set<Deck> findAll() {
-		Set<Deck> decks = new HashSet<Deck>();
+		Set<Deck> decks = new HashSet<>();
 		try ( Session session = HibernateUtil.getSession() ) {
 			
 			Query<Deck> queryDeck = session.createNamedQuery("loadDecks", Deck.class);
@@ -40,11 +44,11 @@ public class DeckServiceImpl implements DeckService {
 	public Deck findById(int id) {
 		Deck deck = null;
 		try ( Session session = HibernateUtil.getSession() ) {
-		
 			Query<Deck> queryDeck = session.createNamedQuery("loadDeckById", Deck.class);
 			queryDeck.setParameter("idDeck", id);
 			deck = queryDeck.getSingleResult();
 		} catch (Exception e) {
+			logger.warn(e);
 			deck = null;
 		}
 		return deck;
@@ -52,9 +56,8 @@ public class DeckServiceImpl implements DeckService {
 
 	@Override
 	public List<Deck> findByName(String name) {
-		List<Deck> editions = new ArrayList<Deck>();
+		List<Deck> editions = new ArrayList<>();
 		try ( Session session = HibernateUtil.getSession() ) {
-		
 			Query<Deck> queryEdition = session.createNamedQuery("loadDecksByName", Deck.class);
 			queryEdition.setParameter("name", "%" + name + "%");
 			editions = queryEdition.getResultList();
@@ -92,11 +95,14 @@ public class DeckServiceImpl implements DeckService {
 	@Override
 	public boolean isDeckExist(Deck deck) {
 		boolean isExist = true;
+		Deck d = null;
 		try ( Session session = HibernateUtil.getSession() ) {
 			Query<Deck> queryDeck = session.createNamedQuery("loadDeckByName", Deck.class);
 			queryDeck.setParameter("name", deck.getName());
-			deck = queryDeck.getSingleResult();
+			d = queryDeck.getSingleResult();
+			logger.warn(d);
 		} catch ( Exception e ) {
+			logger.warn(e);
 			isExist = false;
 		}
 		return isExist;
