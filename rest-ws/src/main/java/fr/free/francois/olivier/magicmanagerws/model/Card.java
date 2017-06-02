@@ -90,14 +90,14 @@ public class Card {
 	 */
 	@JsonIgnore
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="pk.card", cascade=CascadeType.ALL)
-	private Set<DeckLine> deckLines =  new HashSet<DeckLine>(0);
+	private Set<DeckLine> deckLines =  new HashSet<>(0);
 	
 	/**
 	 * La liste des sideboard qui contiennent cette carte
 	 */
 	@JsonIgnore
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="pk.card", cascade=CascadeType.ALL)
-	private Set<SideboardLine> sideboardLines =  new HashSet<SideboardLine>(0);
+	private Set<SideboardLine> sideboardLines =  new HashSet<>(0);
 	
 	/**
 	 * L'url de l'image de la carte
@@ -137,7 +137,7 @@ public class Card {
 	 * @param date
 	 */
 	public Card(String nameFr, String nameEn, String descFr, String descEn, String color, String rarity, int quantity,
-			int disponibility, Type type, Edition edition, Set<Deck> decks, String urlImage, int price, Date date) {
+			int disponibility, Type type, Edition edition, String urlImage, int price, Date date) {
 		super();
 		this.setNameFr(nameFr);
 		this.setNameEn(nameEn);
@@ -476,7 +476,4 @@ public class Card {
 			return false;
 		return true;
 	}
-	
-	
-	
 }
