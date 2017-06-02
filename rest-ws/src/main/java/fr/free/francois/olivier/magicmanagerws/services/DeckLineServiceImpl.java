@@ -18,7 +18,7 @@ public class DeckLineServiceImpl implements DeckLineService {
 		DeckLine deckLine = null;
 		try ( Session session = HibernateUtil.getSession() ) {
 		
-			Query<DeckLine> queryDeckLine = session.createNamedQuery("loadDeckLineByCardAndDeck", DeckLine.class);
+			Query<DeckLine> queryDeckLine = session.createNamedQuery("loadDeckLine", DeckLine.class);
 			queryDeckLine.setParameter("card", card);
 			queryDeckLine.setParameter("deck", deck);
 			deckLine = queryDeckLine.getSingleResult();

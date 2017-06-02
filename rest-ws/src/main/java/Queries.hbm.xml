@@ -2,8 +2,6 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 <hibernate-mapping default-access="field">
     
-    <!-- REQUETES SUR LES TYPES -->
-    
     <!-- CHERCHER TOUS LES TYPES -->
     <query name="loadTypes"><![CDATA[
         from Type t
@@ -28,10 +26,6 @@
         from Type t 
         where t.nameFr = :nameFr and t.nameEn = :nameEn    
     ]]></query>
-    
-    <!-- FIN REQUETES SUR LES TYPES -->
-    
-    <!-- REQUETES SUR LES EDITIONS -->
     
     <!-- CHERCHER TOUTES LES EDITIONS -->
     <query name="loadEditions"><![CDATA[
@@ -59,8 +53,7 @@
         where e.nameFr = :nameFr and e.nameEn = :nameEn    
     ]]></query>
     
-    <!-- FIN REQUETE SUR LES EDITIONS -->
-    
+   	<!-- CHERCHER TOUTES LES CARTES --> 
     <query name="loadCards"><![CDATA[
         from Card c
         	inner join fetch c.edition e
@@ -69,6 +62,7 @@
             inner join fetch t.cards    
     ]]></query>
     
+    <!-- CHERCHER UNE CARTE PAR SON ID -->
     <query name="loadCardById"><![CDATA[
         from Card c 
             inner join fetch c.edition
@@ -76,6 +70,7 @@
         where c.idCard = :idCard 
     ]]></query>
     
+    <!-- CHERCHER UNE CARTE PAR SON NOM ET EDITION -->
     <query name="loadCardByNameAndEdition"><![CDATA[
         from Card c 
             inner join fetch c.edition
@@ -83,14 +78,13 @@
         where c.nameFr = :nameFr and c.nameEn = :nameEn and c.edition = :edition 
     ]]></query>
     
-     <query name="loadCardsByName"><![CDATA[
+    <!-- CHERCHER DES CARTES PAR NOMS -->
+    <query name="loadCardsByName"><![CDATA[
         from Card c 
             inner join fetch c.edition
             inner join fetch c.type        
         where c.nameFr like :name or c.nameEn like :name
     ]]></query>
-    
-    <!-- REQUETE SUR LES DECKS -->
     
     <!-- RECHERCHER TOUS LES DECKS -->
     <query name="loadDecks"><![CDATA[
@@ -135,9 +129,7 @@
         where d.name = :name    
     ]]></query>
     
-    <!-- FIN REQUETES SUR DECK -->
-    
-    <!-- VERIFIER SI UN DECK EXISTE -->
+    <!-- CHERCHER LES CARTES D'UN DECK -->
     <query name="loadDeckLine"><![CDATA[
         from DeckLine dl 
         	left join fetch dl.pk p
@@ -146,7 +138,7 @@
         where p.card = :card and p.deck = :deck    
     ]]></query>
     
-    <!-- -->
+    <!-- CHERCHER LES CARTES DU SIDE D'UN DECK -->
     <query name="loadSideboardLine"><![CDATA[
         from SideboardLine sl 
         	left join fetch sl.pk p
@@ -154,26 +146,5 @@
         	left join fetch p.deck
         where p.card = :card and p.deck = :deck    
     ]]></query>
-    
-     <!--  -->
-    <query name="loadDeckLineByCardAndDeck"><![CDATA[
-        from DeckLine dl 
-        	left join fetch dl.pk p
-        	left join fetch p.card
-        	left join fetch p.deck
-        where p.card = :card and p.deck = :deck   
-    ]]></query>
-    
-    <!-- query name="loadCardsByType"><![CDATA[
-        from Type t 
-            inner join fetch t.cards
-        where t.idType = :idType 
-    ]]></query>
-    
-    <query name="loadCardsByEdition"><![CDATA[
-        from Edition e 
-            inner join fetch e.cards
-        where e.idEdition = :idEdition 
-    ]]></query-->
     
 </hibernate-mapping>
