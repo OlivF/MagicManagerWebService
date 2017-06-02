@@ -7,10 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import fr.free.francois.olivier.magicmanagerws.dao.HibernateUtil;
 import fr.free.francois.olivier.magicmanagerws.model.Card;
-import fr.free.francois.olivier.magicmanagerws.model.CardDeck;
 import fr.free.francois.olivier.magicmanagerws.model.Deck;
 import fr.free.francois.olivier.magicmanagerws.model.DeckLine;
-import fr.free.francois.olivier.magicmanagerws.model.Type;
 
 @Repository
 public class DeckLineServiceImpl implements DeckLineService {
