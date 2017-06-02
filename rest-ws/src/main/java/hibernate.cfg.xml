@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost/MagicDb</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">password</property>
+        
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="connection.pool_size">100</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+
+        <mapping class="fr.free.francois.olivier.magicmanagerws.model.Card" />        
+        <mapping class="fr.free.francois.olivier.magicmanagerws.model.Deck" />
+        <mapping class="fr.free.francois.olivier.magicmanagerws.model.DeckLine" />      
+        <mapping class="fr.free.francois.olivier.magicmanagerws.model.SideboardLine" />       
+        <mapping class="fr.free.francois.olivier.magicmanagerws.model.Type" />
+        <mapping class="fr.free.francois.olivier.magicmanagerws.model.Edition" />
+        
+        <mapping resource="Queries.hbm.xml" />
+    </session-factory>
+</hibernate-configuration>
